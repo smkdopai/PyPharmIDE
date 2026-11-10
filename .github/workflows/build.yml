@@ -1,0 +1,98 @@
+name: Build PyPharm
+
+on:
+  push:
+    tags: ["v*"]          # push a tag like v1.0.0 to build and publish a Release
+  workflow_dispatch:      # or press "Run workflow" on the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node scripts/get-runtime.mjs
+      - run: python build.py
+      - run: cd dist && zip -qr ../PyPharm-web-${{ github.ref_name }}.zip web
+      - uses: actions/upload-artifact@v4
+        with: { name: web, path: dist/web }
+      - uses: actions/upload-artifact@v4
+        with: { name: out-web, path: "PyPharm-web-*.zip" }
+
+  desktop:
+    needs: web
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, cmd: dist:win }
+          - { os: macos-latest,   cmd: dist:mac }
+          - { os: ubuntu-latest,  cmd: dist:linux }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/download-artifact@v4
+        with: { name: web, path: dist/web }
+      - run: npm install
+      - run: npm run ${{ matrix.cmd }} -- --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+      - uses: actions/upload-artifact@v4
+        with:
+          name: out-${{ matrix.os }}
+          path: |
+            release/*.exe
+            release/*.dmg
+            release/*.AppImage
+            release/*.deb
+
+  android:
+    needs: web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: actions/download-artifact@v4
+        with: { name: web, path: dist/web }
+      - run: npm install
+      - run: npx cap add android
+      - run: npx cap sync android
+      - name: Build APK
+        run: cd android && ./gradlew assembleDebug
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk PyPharm-${{ github.ref_name }}.apk
+      - uses: actions/upload-artifact@v4
+        with: { name: out-android, path: "PyPharm-*.apk" }
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [web, desktop, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { pattern: out-*, merge-multiple: true, path: out }
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: out/**
+          body: |
+            **PyPharm ${{ github.ref_name }}** — Python for pharmacy students. Python, numpy, pandas, matplotlib, scipy, seaborn, statsmodels, scikit-learn and sympy are built in; no separate Python install and no internet needed.
+
+            | Platform | Download |
+            |---|---|
+            | Windows | `PyPharm-Setup-*.exe` (installer) or `PyPharm-Portable-*.exe` (no install) |
+            | macOS | `PyPharm-*.dmg` — first launch: right-click → Open |
+            | Linux | `PyPharm-*.AppImage` (chmod +x) or `.deb` |
+            | Android | `PyPharm-*.apk` — allow "install unknown apps" |
+            | Any device / iPhone | Unzip `PyPharm-web-*.zip` onto a website, open it, then *Add to Home Screen* |
+
+            Developed by Dr. S. Selvamuthukumar.
