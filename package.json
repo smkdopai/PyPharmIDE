@@ -1,0 +1,95 @@
+{
+  "name": "pypharm",
+  "productName": "PyPharm",
+  "version": "1.0.0",
+  "description": "Python editor and runner for pharmacy students. Works offline.",
+  "author": "Dr. S. Selvamuthukumar",
+  "license": "UNLICENSED",
+  "main": "electron/main.js",
+  "scripts": {
+    "runtime": "node scripts/get-runtime.mjs",
+    "build:web": "python3 build.py",
+    "start": "electron .",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux",
+    "android": "npx cap add android || true && npx cap sync android",
+    "ios": "npx cap add ios || true && npx cap sync ios"
+  },
+  "devDependencies": {
+    "electron": "32.2.0",
+    "electron-builder": "25.1.8",
+    "@capacitor/cli": "6.1.2"
+  },
+  "dependencies": {
+    "@capacitor/core": "6.1.2",
+    "@capacitor/android": "6.1.2",
+    "@capacitor/ios": "6.1.2",
+    "@capacitor/filesystem": "6.0.1",
+    "@capacitor/share": "6.0.2"
+  },
+  "build": {
+    "appId": "com.pypharm.app",
+    "productName": "PyPharm",
+    "copyright": "\u00a9 Dr. S. Selvamuthukumar",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**",
+      "dist/web/**",
+      "package.json"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "dist/web/pyodide/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon-512.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "PyPharm-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "PyPharm-Portable-${version}.exe"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "category": "public.app-category.education",
+      "icon": "assets/icon-512.png",
+      "artifactName": "PyPharm-${version}.dmg"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Education",
+      "icon": "assets/icon-512.png",
+      "artifactName": "PyPharm-${version}.${ext}"
+    }
+  }
+}

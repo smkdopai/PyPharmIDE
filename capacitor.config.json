@@ -1,0 +1,7 @@
+{
+  "appId": "com.pypharm.app",
+  "appName": "PyPharm",
+  "webDir": "dist/web",
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "never" }
+}

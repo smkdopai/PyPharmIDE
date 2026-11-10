@@ -1,0 +1,223 @@
+<title>PyPharm</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PyPharm — a Python editor and runner for pharmacy students. Works offline on Windows, macOS, Linux, Android and iOS.">
+<meta name="theme-color" content="#0e7c7b">
+<style>/*@@FONTS@@*/</style>
+<style>/*@@CODEMIRROR_CSS@@*/</style>
+<style>/*@@APP_CSS@@*/</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 32 32">
+      <g transform="rotate(-38 16 16)">
+        <rect x="3" y="10" width="26" height="12" rx="6" fill="var(--accent)"/>
+        <path d="M16 10h7a6 6 0 0 1 0 12h-7z" fill="var(--copper)"/>
+        <path d="M8.5 13.6l2.6 2.4-2.6 2.4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 18.4h4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.8v14.4a1 1 0 0 0 1.5.86l11.6-7.2a1 1 0 0 0 0-1.72L8.5 3.94A1 1 0 0 0 7 4.8z" fill="currentColor"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></symbol>
+    <symbol id="i-bug" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9 8a3 3 0 0 1 6 0M12 12v8M3 13h4M17 13h4M4 7l3 2M20 7l-3 2M4 19l3-2M20 19l-3-2"/></g></symbol>
+    <symbol id="i-new" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14h6"/></g></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H7.5a2 2 0 0 0-1.9 1.4L3 19z"/><path d="M3 19l2.6-7.6A2 2 0 0 1 7.5 10H21l-2.6 7.6a2 2 0 0 1-1.9 1.4z"/></g></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></g></symbol>
+    <symbol id="i-files" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 6a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></g></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M4 20a2 2 0 0 0 2 2h13v-4"/><path d="M8 7h7M8 10.5h5" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></g></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-.9.8-.9 1.4v.3"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></g></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".7" fill="currentColor"/></g></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></g></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></g></symbol>
+    <symbol id="i-clear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></g></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></g></symbol>
+    <symbol id="i-term" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/></g></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></g></symbol>
+    <symbol id="i-step" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></g></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></g></symbol>
+    <symbol id="i-first" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 6l-6 6 6 6M7 6v12"/></g></symbol>
+    <symbol id="i-cont" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M13 6l6 6-6 6"/></g></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></g></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></g></symbol>
+  </defs>
+</svg>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><svg><use href="#logo"/></svg>PyPharm <small class="hide-sm">Python for pharmacy</small></div>
+    <div class="tb-sep hide-sm"></div>
+    <div class="tb-group hide-sm">
+      <button class="ibtn" id="bNew" title="New tab (Ctrl+N)"><svg><use href="#i-new"/></svg></button>
+      <button class="ibtn" id="bOpen" title="Open a .py or .txt file (Ctrl+O)"><svg><use href="#i-open"/></svg></button>
+      <button class="ibtn" id="bSave" title="Save to your device (Ctrl+S)"><svg><use href="#i-save"/></svg></button>
+    </div>
+    <div class="tb-sep hide-sm"></div>
+    <div class="tb-group">
+      <button class="ibtn btn-run hide-sm" id="bRun" title="Run (Ctrl+Enter or F5). Runs only the selected lines if you select some."><svg><use href="#i-play"/></svg><span class="lbl">Run</span><span class="kbd" id="runKbd">Ctrl ↵</span></button>
+      <button class="ibtn btn-stop" id="bStop" title="Stop the running program (Shift+F5)" disabled><svg><use href="#i-stop"/></svg><span class="lbl hide-sm">Stop</span></button>
+      <button class="ibtn hide-sm" id="bDebug" title="Step through your code line by line (F6). Click beside a line number to add a breakpoint."><svg><use href="#i-bug"/></svg><span class="lbl">Step through</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="statuspill" id="pill" role="status" aria-live="polite"><i class="dot loading" id="pillDot"></i><span id="pillText">Starting Python…</span></div>
+    <button class="ibtn hide-sm" id="bTheme" title="Switch light / dark"><svg><use href="#i-moon"/></svg></button>
+    <button class="ibtn" id="bSettings" title="Settings"><svg><use href="#i-gear"/></svg></button>
+    <button class="ibtn hide-sm" id="bAbout" title="About PyPharm"><svg><use href="#i-info"/></svg></button>
+  </header>
+
+  <div class="main" id="main" data-view="code">
+    <nav class="rail" aria-label="Panels">
+      <button class="ibtn on" data-side="files" title="Files"><svg><use href="#i-files"/></svg></button>
+      <button class="ibtn" data-side="examples" title="Examples"><svg><use href="#i-book"/></svg></button>
+      <button class="ibtn" data-side="packages" title="Packages"><svg><use href="#i-box"/></svg></button>
+      <button class="ibtn" data-side="help" title="Shortcuts and help"><svg><use href="#i-help"/></svg></button>
+      <div class="grow"></div>
+      <button class="ibtn" id="bSideToggle" title="Hide side panel"><svg><use href="#i-panel"/></svg></button>
+    </nav>
+
+    <aside class="side" id="side">
+      <section data-panel="files">
+        <div class="side-head"><h2>Files</h2>
+          <button class="ibtn" id="bUpload" title="Add files (CSV, Excel, images, .py…)"><svg><use href="#i-upload"/></svg></button></div>
+        <div class="side-body">
+          <div class="drop" id="drop">Drop data files here, or use the upload button. Your scripts read and write files in this folder.</div>
+          <div class="flist" id="flist"></div>
+        </div>
+      </section>
+      <section data-panel="examples" hidden>
+        <div class="side-head"><h2>Examples</h2></div>
+        <div class="side-body" id="exlist"></div>
+      </section>
+      <section data-panel="packages" hidden>
+        <div class="side-head"><h2>Packages</h2></div>
+        <div class="side-body">
+          <p class="side-note">Bundled with the app and loaded automatically when you <span class="mono">import</span> them. Works offline.</p>
+          <div id="pkglist"></div>
+          <div class="exgroup">Install from PyPI</div>
+          <p class="side-note">Pure-Python packages only. Needs internet.</p>
+          <form class="pipform" id="pipform"><label class="sr" for="pipname">Package name</label><input id="pipname" placeholder="e.g. pint" autocomplete="off" autocapitalize="off" spellcheck="false"><button>Install</button></form>
+        </div>
+      </section>
+      <section data-panel="help" hidden>
+        <div class="side-head"><h2>Shortcuts &amp; help</h2></div>
+        <div class="side-body help">
+          <dl id="keys"></dl>
+          <h3>Asking for input</h3>
+          <p>When your program calls <span class="mono">input()</span>, the box under Output turns orange. Type your answer and press Enter.</p>
+          <h3>Stepping through code</h3>
+          <p>Click beside a line number to set a breakpoint, then press <b>Step through</b>. Move forwards and backwards to watch each variable change.</p>
+          <h3>Files</h3>
+          <p>Everything in the Files panel sits next to your script. <span class="mono">pd.read_csv("data.csv")</span> reads an uploaded file; files your program saves appear there too. Every open tab is also saved there, so one tab can import another.</p>
+          <h3>Plots</h3>
+          <p>Matplotlib and seaborn charts appear in Output and the Plots tab. Click a plot to enlarge or save it.</p>
+        </div>
+      </section>
+    </aside>
+
+    <section class="workspace" aria-label="Code editor">
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div class="editor-wrap"><textarea id="ed"></textarea></div>
+      <div class="keybar" id="keybar" aria-label="Symbol keys"></div>
+      <button class="fab" id="fab"><svg><use href="#i-play"/></svg><span>Run</span></button>
+    </section>
+
+    <div class="splitter" id="splitter" role="separator" aria-label="Resize console"></div>
+
+    <section class="console" aria-label="Program output">
+      <div class="ctabs" role="tablist">
+        <button class="ctab on" data-c="out">Output</button>
+        <button class="ctab" data-c="plots">Plots <span class="badge" id="nPlots">0</span></button>
+        <button class="ctab" data-c="vars">Variables <span class="badge" id="nVars">0</span></button>
+        <button class="ctab" data-c="msgs">Messages <span class="badge" id="nMsgs">0</span></button>
+        <button class="ctab" data-c="dbg" id="ctabDbg" hidden>Step through</button>
+        <div class="ctools">
+          <button class="ibtn" id="bCopyOut" title="Copy output"><svg><use href="#i-copy"/></svg></button>
+          <button class="ibtn" id="bClear" title="Clear output"><svg><use href="#i-clear"/></svg></button>
+        </div>
+      </div>
+      <div class="cpanel" data-cp="out"><div id="out"></div></div>
+      <div class="cpanel" data-cp="plots" hidden><div class="plots" id="plots"></div></div>
+      <div class="cpanel" data-cp="vars" hidden><div id="vars"></div></div>
+      <div class="cpanel" data-cp="msgs" hidden><div id="msgs"></div></div>
+      <div class="cpanel" data-cp="dbg" hidden><div class="dbg" id="dbg"></div></div>
+      <form class="inputbar" id="inputbar">
+        <label for="inp" id="inpLabel">Input</label>
+        <input id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" disabled placeholder="Your program isn't asking for input">
+        <button id="inpSend" disabled>Send</button>
+      </form>
+    </section>
+  </div>
+
+  <footer class="statusbar">
+    <span id="sbPy">Python</span>
+    <span id="sbSyn" class="synok">No syntax errors</span>
+    <span class="r"><span id="sbTime"></span><span id="sbPos">Ln 1, Col 1</span><span>Spaces: 4</span><span>UTF-8</span></span>
+  </footer>
+
+  <nav class="mobnav" id="mobnav">
+    <button data-v="code" class="on"><svg><use href="#i-code"/></svg>Code</button>
+    <button data-v="out"><svg><use href="#i-term"/></svg>Output<i class="nb" id="nbOut" hidden></i></button>
+    <button data-v="side" data-side="files"><svg><use href="#i-files"/></svg>Files</button>
+    <button data-v="more"><svg><use href="#i-more"/></svg>More</button>
+  </nav>
+</div>
+
+<input type="file" id="fOpen" accept=".py,.txt,.pyw,text/plain" multiple hidden>
+<input type="file" id="fUpload" multiple hidden>
+
+<dialog id="dlgAbout"><div class="dlg">
+  <div class="about-hero"><svg><use href="#logo"/></svg><div><h3>PyPharm</h3><p>Python for pharmacy &amp; pharmaceutical sciences</p></div></div>
+  <dl class="about-grid">
+    <dt>Version</dt><dd>1.0.0</dd>
+    <dt>Developer</dt><dd>Dr. S. Selvamuthukumar<br><span style="color:var(--muted)">Department of Pharmaceutics, Annamalai University, Tamil Nadu, India</span></dd>
+    <dt>Python</dt><dd id="abPy">loading…</dd>
+    <dt>Runs on</dt><dd>Windows, macOS, Linux, Android, iOS and any modern browser. Python runs inside the app, so no separate installation is needed.</dd>
+    <dt>Credits</dt><dd>Built with Pyodide and CodeMirror.</dd>
+  </dl>
+  <p style="font-size:12px">PyPharm is a learning tool. Code suggestions and error explanations help beginners but do not replace testing your programs or reading the Python documentation.</p>
+  <div class="row"><button class="btn primary" data-close>Close</button></div>
+</div></dialog>
+
+<dialog id="dlgSettings"><div class="dlg">
+  <h3>Settings</h3>
+  <div class="field"><label for="setTheme">Theme</label><select id="setTheme"><option value="system">Match system</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+  <div class="field"><label for="setFont">Code font size</label><input type="number" id="setFont" min="10" max="28" step="1"></div>
+  <div class="field"><label for="setAuto">Suggest as you type<small>Shows completions after a dot or three letters. Ctrl+Space always works.</small></label><input type="checkbox" id="setAuto"></div>
+  <div class="field"><label for="setWrap">Wrap long lines</label><input type="checkbox" id="setWrap"></div>
+  <div class="field"><label for="setKeys">Symbol keys above keyboard<small>Handy on phones and tablets.</small></label><input type="checkbox" id="setKeys"></div>
+  <div class="field"><label for="setClear">Clear output on each run</label><input type="checkbox" id="setClear"></div>
+  <div class="row"><button class="btn" id="bResetAll">Reset tabs and files…</button><button class="btn primary" data-close>Done</button></div>
+</div></dialog>
+
+<dialog id="dlgConfirm"><div class="dlg">
+  <h3 id="cfTitle"></h3><p id="cfText"></p>
+  <div class="row"><button class="btn" data-close value="no">Cancel</button><button class="btn danger" id="cfYes">OK</button></div>
+</div></dialog>
+
+<dialog id="dlgMore"><div class="dlg">
+  <h3>More</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <button class="btn" data-more="new">New tab</button>
+    <button class="btn" data-more="open">Open file</button>
+    <button class="btn" data-more="save">Save file</button>
+    <button class="btn" data-more="debug">Step through</button>
+    <button class="btn" data-more="examples">Examples</button>
+    <button class="btn" data-more="packages">Packages</button>
+    <button class="btn" data-more="help">Help</button>
+    <button class="btn" data-more="theme">Light / dark</button>
+    <button class="btn" data-more="about">About</button>
+  </div>
+  <div class="row"><button class="btn primary" data-close>Close</button></div>
+</div></dialog>
+
+<dialog id="dlgLight" class="light"><div class="lightbox">
+  <div class="lb-head"><b id="lbTitle"></b><button class="btn" id="lbSave">Save</button><button class="btn primary" data-close>Close</button></div>
+  <div id="lbBody"></div>
+</div></dialog>
+
+<script>/*@@CODEMIRROR_JS@@*/</script>
+<script>/*@@EXAMPLES_JS@@*/</script>
+<script>/*@@APP_JS@@*/</script>
