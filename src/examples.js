@@ -1,5 +1,361 @@
 /* Starter programs shown in the Examples panel. */
 window.PP_EXAMPLES = [
+  { group: "BP101T · Unit I – Introduction", title: "Variables and data types", file: "u1_datatypes.py", code:
+`# Unit I - Variables and data types
+# A drug record stored in four basic data types
+drug_name = "Paracetamol"     # str   (text)
+strength_mg = 500             # int   (whole number)
+price_per_strip = 18.75       # float (decimal number)
+is_otc = True                 # bool  (True / False)
+
+print("Drug name     :", drug_name, "->", type(drug_name))
+print("Strength (mg) :", strength_mg, "->", type(strength_mg))
+print("Price (Rs)    :", price_per_strip, "->", type(price_per_strip))
+print("Sold OTC?     :", is_otc, "->", type(is_otc))
+
+# Variables can be updated
+strength_mg = 650
+print(f"New strength: {drug_name} {strength_mg} mg")
+
+# Strings have useful methods
+print(drug_name.upper(), "| letters:", len(drug_name), "| starts with 'Para':", drug_name.startswith("Para"))
+` },
+  { group: "BP101T · Unit I – Introduction", title: "Type casting", file: "u1_typecasting.py", code:
+`# Unit I - Type casting (converting between data types)
+label = "500"                 # text read from a label or a form
+qty_text = "10"
+
+# "500" + "10" joins text; convert first to do arithmetic
+print("Without casting:", label + qty_text)
+total_mg = int(label) * int(qty_text)
+print("With int()     :", total_mg, "mg in the strip")
+
+# float() for decimals, str() to join numbers with text
+weight = float("62.5")
+print("Patient weight is " + str(weight) + " kg")
+
+# int() drops the decimal part; round() rounds it
+volume_ml = 7.8
+print("int(7.8)   =", int(volume_ml))
+print("round(7.8) =", round(volume_ml))
+
+# bool(): 0 and empty text are False, everything else True
+print("bool(0) =", bool(0), "| bool(5) =", bool(5), "| bool('') =", bool(""))
+
+# Casting can fail - Python reports a ValueError
+try:
+    int("500 mg")
+except ValueError as e:
+    print("Error:", e)
+    print("Tip: strip the unit first ->", int("500 mg".replace("mg", "").strip()))
+` },
+  { group: "BP101T · Unit I – Introduction", title: "Operators: arithmetic, comparison, logical", file: "u1_operators.py", code:
+`# Unit I - Basic operators: arithmetic, comparison, logical
+# Arithmetic: + - * / // % **
+tablets = 45
+per_day = 2
+print("Days of supply  (//):", tablets // per_day)
+print("Tablets left    (%) :", tablets % per_day)
+print("Exact days      (/) :", tablets / per_day)
+
+# Exponent: fraction of drug left after n half-lives
+n = 3
+print("Fraction left after", n, "half-lives (**):", 0.5 ** n)
+
+# Comparison: == != > < >= <=  (result is True/False)
+temp_c = 6
+print("Fridge temp within 2-8 °C?", temp_c >= 2 and temp_c <= 8)
+print("Expired?", 2026 > 2027)
+
+# Logical: and, or, not
+age = 70
+crcl = 45           # creatinine clearance, mL/min
+renal_adjust = age >= 65 and crcl < 50
+print("Renal dose adjustment needed?", renal_adjust)
+print("not renal_adjust ->", not renal_adjust)
+print("Elderly OR impaired?", age >= 65 or crcl < 50)
+` },
+  { group: "BP101T · Unit I – Introduction", title: "Input and output (CrCl calculator)", file: "u1_input_output.py", code:
+`# Unit I - Input and output
+# Cockcroft-Gault creatinine clearance (mL/min)
+# Type your answers in the orange Input box below the Output
+name = input("Patient name: ")
+age = int(input("Age (years): "))
+weight = float(input("Body weight (kg): "))
+scr = float(input("Serum creatinine (mg/dL): "))
+sex = input("Sex (M/F): ").strip().upper()
+
+crcl = (140 - age) * weight / (72 * scr)
+if sex == "F":
+    crcl = crcl * 0.85
+
+print()
+print("=" * 36)
+print(f"Patient      : {name}")
+print(f"Age / Weight : {age} y / {weight:.1f} kg")
+print(f"CrCl         : {crcl:.1f} mL/min")
+print("=" * 36)
+` },
+  { group: "BP101T · Unit I – Introduction", title: "IDE vs text editor: try the debugger", file: "u1_ide_debug.py", code:
+`# Unit I - Why use an IDE instead of a text editor?
+# Try these PyPharm (IDE) features on this program:
+#  1. Syntax highlighting and line numbers you can see now.
+#  2. Click a line number to set a breakpoint, then choose
+#     "Step through" (Debug) to run one line at a time.
+#  3. Open the Variables tab to watch values change.
+#  4. Delete a closing bracket - the status bar flags the error
+#     before you run.
+doses_mg = [250, 500, 500, 750]
+total = 0
+for d in doses_mg:
+    total = total + d        # watch 'total' grow while stepping
+average = total / len(doses_mg)
+print("Total dose  :", total, "mg")
+print("Average dose:", average, "mg")
+` },
+  { group: "BP101T · Control structures & functions", title: "if / elif / else: storage conditions", file: "co2_if_else.py", code:
+`# Control structures - if / elif / else
+# Storage condition from the label temperature (IP definitions)
+def storage_class(temp_c):
+    if temp_c <= -15:
+        return "Freezer"
+    elif 2 <= temp_c <= 8:
+        return "Cold (refrigerator)"
+    elif 8 < temp_c <= 25:
+        return "Cool"
+    elif 25 < temp_c <= 30:
+        return "Room temperature"
+    else:
+        return "Check label - outside standard ranges"
+
+for product, t in [("Insulin", 5), ("Vaccine (frozen)", -20),
+                   ("Amoxicillin capsules", 22), ("ORS sachet", 28), ("Unknown", 40)]:
+    print(f"{product:22s} {t:>4} °C  ->  {storage_class(t)}")
+` },
+  { group: "BP101T · Control structures & functions", title: "for and while loops, break, continue", file: "co2_loops.py", code:
+`# Control structures - for and while loops, break and continue
+# while: how many hours until the plasma level falls below the MEC?
+c = 40.0          # mg/L just after the dose
+half_life = 4     # h
+mec = 5.0         # minimum effective concentration, mg/L
+hours = 0
+while c >= mec:
+    hours += half_life
+    c = c / 2
+    print(f"after {hours:2d} h : {c:5.2f} mg/L")
+print("Re-dose after about", hours, "h")
+
+# for with continue / break: screen a batch of pH readings
+print()
+readings = [6.8, 7.0, None, 7.1, 6.9, 8.4, 7.0]
+for i, ph in enumerate(readings, start=1):
+    if ph is None:
+        print(f"Sample {i}: missing - skipped")
+        continue
+    if not 6.5 <= ph <= 7.5:
+        print(f"Sample {i}: pH {ph} OUT OF LIMIT - stop the batch")
+        break
+    print(f"Sample {i}: pH {ph} ok")
+` },
+  { group: "BP101T · Control structures & functions", title: "Functions: BMI, BSA, paediatric dose", file: "co2_functions.py", code:
+`# Functions - parameters, default values, return
+def bmi(weight_kg, height_m):
+    """Body-mass index."""
+    return weight_kg / height_m ** 2
+
+def bsa_mosteller(weight_kg, height_cm):
+    """Body surface area (m^2), Mosteller formula."""
+    return ((weight_kg * height_cm) / 3600) ** 0.5
+
+def paediatric_dose(adult_dose, child_bsa, adult_bsa=1.73):
+    """BSA-based paediatric dose; adult_bsa has a default value."""
+    return adult_dose * child_bsa / adult_bsa
+
+w, h = 20, 115     # child: 20 kg, 115 cm
+child_bsa = bsa_mosteller(w, h)
+print(f"BMI : {bmi(w, h / 100):.1f} kg/m²")
+print(f"BSA : {child_bsa:.2f} m²")
+print(f"Dose: {paediatric_dose(500, child_bsa):.0f} mg (adult dose 500 mg)")
+
+# A lambda is a one-line function
+mg_to_g = lambda mg: mg / 1000
+print("1500 mg =", mg_to_g(1500), "g")
+` },
+  { group: "BP101T · Data structures & file handling", title: "List, tuple, set, dictionary", file: "co3_data_structures.py", code:
+`# Data structures - list, tuple, set, dictionary
+# List: ordered, changeable
+prescription = ["Metformin", "Atorvastatin", "Amlodipine"]
+prescription.append("Aspirin")
+prescription.sort()
+print("List  :", prescription, "| first:", prescription[0])
+
+# Tuple: ordered, cannot change (fixed facts)
+storage_range = (2, 8)            # °C
+print("Tuple :", storage_range, "| min:", storage_range[0])
+
+# Set: unique items, fast membership tests
+interacting = {"Aspirin", "Warfarin", "Ibuprofen"}
+flagged = interacting & set(prescription)   # intersection
+print("Set   : drugs needing an interaction check ->", flagged)
+
+# Dictionary: key -> value lookup
+stock = {"Metformin": 120, "Atorvastatin": 40, "Amlodipine": 0, "Aspirin": 300}
+stock["Atorvastatin"] -= 10
+print("Dict  :", stock)
+out_of_stock = [d for d, qty in stock.items() if qty == 0]
+print("Out of stock:", out_of_stock)
+
+# Nested: a list of dictionaries (one record per patient)
+patients = [{"id": 1, "drug": "Metformin", "dose": 500},
+            {"id": 2, "drug": "Aspirin", "dose": 75}]
+for p in patients:
+    print(f"Patient {p['id']}: {p['drug']} {p['dose']} mg")
+` },
+  { group: "BP101T · Data structures & file handling", title: "Read and write text and CSV files", file: "co3_file_handling.py", code:
+`# File handling - write, append and read files
+import csv
+
+# 1. Write a text file
+with open("batch_log.txt", "w") as f:
+    f.write("Batch PCM-2401 granulation started\\n")
+    f.write("Moisture content: 2.1 %\\n")
+
+# 2. Append to it
+with open("batch_log.txt", "a") as f:
+    f.write("Compression complete\\n")
+
+# 3. Read it back line by line
+print("--- batch_log.txt ---")
+with open("batch_log.txt") as f:
+    for n, line in enumerate(f, start=1):
+        print(n, line.strip())
+
+# 4. Write and read a CSV file
+rows = [["Batch", "Assay_%", "Hardness_kp"],
+        ["PCM-2401", 99.2, 6.1], ["PCM-2402", 97.8, 5.7], ["PCM-2403", 101.4, 6.4]]
+with open("qc_results.csv", "w", newline="") as f:
+    csv.writer(f).writerows(rows)
+
+print()
+print("--- qc_results.csv ---")
+with open("qc_results.csv") as f:
+    for rec in csv.DictReader(f):
+        ok = 95 <= float(rec["Assay_%"]) <= 105
+        print(f"{rec['Batch']}: assay {rec['Assay_%']}% -> {'PASS' if ok else 'FAIL'}")
+print()
+print("Both files are now in the Files panel - open or download them.")
+` },
+  { group: "BP101T · NumPy & Pandas", title: "NumPy: content uniformity", file: "co4_numpy.py", code:
+`# NumPy - content uniformity of 10 tablets (acceptance value, simplified)
+import numpy as np
+
+content = np.array([98.2, 101.5, 99.8, 97.6, 100.9, 102.3, 99.1, 98.7, 100.4, 101.0])  # % label claim
+
+mean = content.mean()
+sd = content.std(ddof=1)               # sample standard deviation
+print("Mean :", round(mean, 2), "%")
+print("SD   :", round(sd, 2))
+print("Range:", content.min(), "-", content.max())
+print("RSD  :", round(100 * sd / mean, 2), "%")
+
+# Acceptance value AV = |M - mean| + k*s  (k = 2.4 for n = 10, L1 = 15)
+M = min(max(mean, 98.5), 101.5)
+av = abs(M - mean) + 2.4 * sd
+print("AV   :", round(av, 2), "->", "PASS" if av <= 15 else "FAIL (test 20 more)")
+
+# Vectorised maths on the whole array at once
+mg = content / 100 * 500               # convert % to mg for a 500 mg tablet
+print("mg per tablet:", np.round(mg, 1))
+print("Tablets outside 95-105 %:", np.sum((content < 95) | (content > 105)))
+` },
+  { group: "BP101T · NumPy & Pandas", title: "Pandas: healthcare dataset", file: "co4_pandas.py", code:
+`# Pandas - analysing a small healthcare dataset
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "patient": ["P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08"],
+    "age":     [45, 62, 38, 71, 55, 66, np.nan, 49],
+    "sex":     ["M", "F", "F", "M", "M", "F", "F", "M"],
+    "drug":    ["Metformin", "Metformin", "Glimepiride", "Metformin",
+                "Glimepiride", "Metformin", "Glimepiride", "Metformin"],
+    "fbs_before": [168, 182, 155, 201, 174, 190, 160, 171],   # fasting blood sugar, mg/dL
+    "fbs_after":  [128, 140, 130, 150, 139, 145, 126, 133],
+})
+
+print(df.head(), "\\n")
+print("Missing values:\\n", df.isna().sum()[lambda s: s > 0], "\\n")
+df["age"] = df["age"].fillna(df["age"].median())        # fill the gap
+
+df["reduction"] = df["fbs_before"] - df["fbs_after"]   # new column
+print(df[["patient", "drug", "reduction"]], "\\n")
+
+print("Patients over 60:\\n", df[df["age"] > 60][["patient", "age", "drug"]], "\\n")
+print("Mean reduction by drug:\\n", df.groupby("drug")["reduction"].agg(["count", "mean"]).round(1), "\\n")
+print(df[["age", "fbs_before", "fbs_after", "reduction"]].describe().round(1))
+
+df.to_csv("diabetes_study.csv", index=False)
+print("\\nSaved diabetes_study.csv (see the Files panel)")
+` },
+  { group: "BP101T · Visualisation", title: "Plasma profile and therapeutic window", file: "co5_plot_pk.py", code:
+`# Visualisation - plasma level vs time with the therapeutic window
+import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 24, 300)                 # h
+ka, k, F, dose, Vd = 1.2, 0.17, 0.9, 500, 35
+C = F * dose * ka / (Vd * (ka - k)) * (np.exp(-k * t) - np.exp(-ka * t))
+MEC, MTC = 4, 12                            # mg/L
+
+plt.figure(figsize=(8, 4.5))
+plt.plot(t, C, lw=2.5, color="#0e7c7b", label="Plasma concentration")
+plt.axhline(MEC, ls="--", color="#2b8150", label="MEC")
+plt.axhline(MTC, ls="--", color="#be3a2e", label="MTC")
+plt.fill_between(t, MEC, MTC, color="#2b8150", alpha=0.08, label="Therapeutic window")
+i = C.argmax()
+plt.annotate(f"Cmax {C[i]:.1f} mg/L at {t[i]:.1f} h", (t[i], C[i]), (t[i] + 3, C[i] + 1.2),
+             arrowprops=dict(arrowstyle="->"))
+plt.xlabel("Time (h)"); plt.ylabel("Concentration (mg/L)")
+plt.title("Oral dose: concentration-time profile")
+plt.legend(); plt.grid(alpha=0.3)
+plt.show()
+
+inside = t[(C >= MEC) & (C <= MTC)]
+print(f"Time within therapeutic window: {inside.min():.1f} h to {inside.max():.1f} h")
+` },
+  { group: "BP101T · Visualisation", title: "Bar, pie, histogram and box plot", file: "co5_charts.py", code:
+`# Visualisation - bar, pie, histogram and box plot in one figure
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+adr = pd.Series({"Nausea": 34, "Headache": 21, "Rash": 9, "Dizziness": 15, "Diarrhoea": 12})
+rng = np.random.default_rng(1)
+weights = rng.normal(500, 6, 60)                         # tablet weights, mg
+hardness = pd.DataFrame({"Batch A": rng.normal(6.2, 0.4, 20),
+                         "Batch B": rng.normal(5.6, 0.6, 20)})
+
+fig, ax = plt.subplots(2, 2, figsize=(10, 7))
+adr.sort_values().plot.barh(ax=ax[0, 0], color="#0e7c7b")
+ax[0, 0].set(title="Adverse drug reactions reported", xlabel="Number of reports")
+
+ax[0, 1].pie(adr, labels=adr.index, autopct="%1.0f%%", startangle=90)
+ax[0, 1].set_title("Share of ADR reports")
+
+ax[1, 0].hist(weights, bins=12, color="#b9540f", edgecolor="white")
+ax[1, 0].axvline(weights.mean(), color="k", ls="--", label=f"mean {weights.mean():.1f} mg")
+ax[1, 0].set(title="Tablet weight distribution", xlabel="Weight (mg)", ylabel="Tablets")
+ax[1, 0].legend()
+
+ax[1, 1].boxplot([hardness["Batch A"], hardness["Batch B"]])
+ax[1, 1].set_xticks([1, 2])
+ax[1, 1].set_xticklabels(hardness.columns)
+ax[1, 1].set(title="Hardness by batch", ylabel="Hardness (kp)")
+
+plt.tight_layout()
+plt.show()
+print(adr.describe().round(1))
+` },
   { group: "Python basics", title: "Hello, pharmacy", file: "hello.py", code:
 `# Your first PyPharm program
 name = input("What is your name? ")
