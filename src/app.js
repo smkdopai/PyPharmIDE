@@ -176,6 +176,16 @@ const pending = new Map();
 let loadedPkgs = new Set();
 function startWorker() {
   wReady = false; setPill("loading", "Starting Python…");
+  if (location.protocol === "file:") {
+    setPill("err", "Open through a web address");
+    log("err", "PyPharm was opened directly from a folder (file://), and browsers block the Python engine there.\n" +
+      "Serve the folder instead: open Terminal (or Command Prompt) in this folder and run\n" +
+      "    python3 -m http.server 8000\n" +
+      "then visit http://localhost:8000 — or upload the folder to a website (https).\n" +
+      "The desktop and Android apps do not need this step.");
+    sysLine("Python could not start: the page was opened from a file, not a web address.", "bad");
+    return;
+  }
   try { worker = new Worker("worker.js"); }
   catch (e) { setPill("err", "Python could not start"); log("err", "This browser could not start the Python engine: " + e.message); return; }
   worker.onmessage = onWorker;
