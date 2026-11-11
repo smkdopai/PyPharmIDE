@@ -213,11 +213,11 @@ c = 40.0          # mg/L just after the dose
 half_life = 4     # h
 mec = 5.0         # minimum effective concentration, mg/L
 hours = 0
-while c >= mec:
+while c > mec:
     hours += half_life
     c = c / 2
     print(f"after {hours:2d} h : {c:5.2f} mg/L")
-print("Re-dose after about", hours, "h")
+print("Level falls to the MEC after", hours, "h - give the next dose then")
 
 # for with continue / break: screen a batch of pH readings
 print()
@@ -574,6 +574,7 @@ a2.scatter(df["prescriptions"], df["adr_reports"], s=80, color="#b9540f")
 for _, r in df.iterrows():
     a2.annotate(r["drug"], (r["prescriptions"], r["adr_reports"]), xytext=(5, 5), textcoords="offset points", fontsize=8)
 a2.set(title="Reports vs prescriptions", xlabel="Prescriptions", ylabel="ADR reports")
+a2.margins(0.15)
 a2.grid(alpha=0.3)
 plt.tight_layout()
 plt.show()
