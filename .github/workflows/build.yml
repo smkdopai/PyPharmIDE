@@ -33,7 +33,6 @@ jobs:
         include:
           - { os: windows-latest, cmd: dist:win }
           - { os: macos-latest,   cmd: dist:mac }
-          - { os: ubuntu-latest,  cmd: dist:linux }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -51,8 +50,6 @@ jobs:
           path: |
             release/*.exe
             release/*.dmg
-            release/*.AppImage
-            release/*.deb
 
   android:
     needs: web
@@ -91,7 +88,6 @@ jobs:
             |---|---|
             | Windows | `PyPharm-Setup-*.exe` (installer) or `PyPharm-Portable-*.exe` (no install) |
             | macOS | `PyPharm-*.dmg` — first launch: right-click → Open |
-            | Linux | `PyPharm-*.AppImage` (chmod +x) or `.deb` |
             | Android | `PyPharm-*.apk` — allow "install unknown apps" |
             | Any device / iPhone | Unzip `PyPharm-web-*.zip` onto a website, open it, then *Add to Home Screen* |
 
