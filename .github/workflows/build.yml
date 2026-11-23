@@ -20,10 +20,14 @@ jobs:
       - run: node scripts/get-runtime.mjs
       - run: python build.py
       - run: cd dist && zip -qr ../PyPharm-web-${{ github.ref_name }}.zip web
+      # One upload only (the zip). The other jobs unzip it, so the big
+      # Pyodide runtime is no longer stored twice per run.
       - uses: actions/upload-artifact@v4
-        with: { name: web, path: dist/web }
-      - uses: actions/upload-artifact@v4
-        with: { name: out-web, path: "PyPharm-web-*.zip" }
+        with:
+          name: out-web
+          path: "PyPharm-web-*.zip"
+          retention-days: 1       # temporary; the Release keeps the final copy
+          compression-level: 0    # already zipped
 
   desktop:
     needs: web
@@ -39,7 +43,10 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - uses: actions/download-artifact@v4
-        with: { name: web, path: dist/web }
+        with: { name: out-web, path: . }
+      - name: Unzip web build
+        shell: bash
+        run: mkdir -p dist && unzip -q PyPharm-web-*.zip -d dist && rm PyPharm-web-*.zip
       - run: npm install
       - run: npm run ${{ matrix.cmd }} -- --publish never
         env:
@@ -50,6 +57,8 @@ jobs:
           path: |
             release/*.exe
             release/*.dmg
+          retention-days: 1
+          compression-level: 0
 
   android:
     needs: web
@@ -61,7 +70,9 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
       - uses: actions/download-artifact@v4
-        with: { name: web, path: dist/web }
+        with: { name: out-web, path: . }
+      - name: Unzip web build
+        run: mkdir -p dist && unzip -q PyPharm-web-*.zip -d dist && rm PyPharm-web-*.zip
       - run: npm install
       - run: npx cap add android
       - run: npx cap sync android
@@ -69,7 +80,11 @@ jobs:
         run: cd android && ./gradlew assembleDebug
       - run: cp android/app/build/outputs/apk/debug/app-debug.apk PyPharm-${{ github.ref_name }}.apk
       - uses: actions/upload-artifact@v4
-        with: { name: out-android, path: "PyPharm-*.apk" }
+        with:
+          name: out-android
+          path: "PyPharm-*.apk"
+          retention-days: 1
+          compression-level: 0
 
   release:
     if: startsWith(github.ref, 'refs/tags/v')
